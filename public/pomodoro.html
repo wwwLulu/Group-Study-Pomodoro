@@ -23,7 +23,9 @@
     </head>
     <body>
         <div id="app">
-            <button @click="startTimer()">Click To Start Timer</button>
+            <button @click="setTimer">Create Timer</button>
+            <button v-if="!timerPaused" @click="pauseTimer()">Pause</button>
+            <button v-else @click="playTimer()">Play</button>
             <h2>{{time}}</h2>
             <ul>
                 <li v-for="user in userList" :key="user">{{user.username}}</li>

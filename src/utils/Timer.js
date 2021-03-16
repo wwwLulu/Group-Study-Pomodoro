@@ -3,13 +3,16 @@
             room: {
                 pomoTime: new Time
                 breakTime: new Time
+                paused: false,
             },
             room2: {
                 pomoTime: new Time
                 breakTime: new Time
+                paused: false
             }
 */
 const rooms = {}
+const { io } = require('../Index.js')
 
 class Time {
     constructor(hours, minutes, seconds) {
@@ -19,6 +22,18 @@ class Time {
         this.seconds = seconds
         this.time
     }
+
+    // TickTime(room, paused) {
+    //     const timer = setInterval(() => {
+    //         if (!paused) {
+    //             io.to(room).emit(
+    //                 'updateTimer',
+    //                 getCurrentTime(room, 'pomodoro')
+    //             )
+    //             tickPomodoro(room)
+    //         }
+    //     }, 1000)
+    // }
 
     TimeOver() {
         return this.hours === 0 && this.minutes === 0 && this.seconds === 0
@@ -137,12 +152,12 @@ module.exports = {
     tickTimeSpent,
 }
 
-initializePomodoro('dskl', {})
-tickPomodoro('dskl')
-tickPomodoro('dskl')
-tickPomodoro('dskl')
-tickPomodoro('dskl')
-tickPomodoro('dskl')
-tickBreakTime('dskl')
+// initializePomodoro('dskl', {})
+// tickPomodoro('dskl')
+// tickPomodoro('dskl')
+// tickPomodoro('dskl')
+// tickPomodoro('dskl')
+// tickPomodoro('dskl')
+// tickBreakTime('dskl')
 
 console.log(rooms)

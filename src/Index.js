@@ -11,6 +11,7 @@ const {
 } = require('./utils/Users')
 
 const {
+    rooms,
     getCurrentTime,
     initializePomodoro,
     setPomodoroTime,
@@ -56,16 +57,31 @@ io.on('connection', (socket) => {
         callback()
     })
 
-    socket.on('startTimer', () => {
+    socket.on('setTimer', () => {
         const user = getUser(socket.id)
         initializePomodoro(user.room, {})
+        io.to(user.room).emit('setTimer')
         const timer = setInterval(() => {
-            io.to(user.room).emit(
-                'updateTimer',
-                getCurrentTime(user.room, 'pomodoro')
-            )
-            tickPomodoro(user.room)
+            if (!rooms[user.room].paused) {
+                io.to(user.room).emit(
+                    'updateTimer',
+                    getCurrentTime(user.room, 'pomodoro')
+                )
+                tickPomodoro(user.room)
+            }
         }, 1000)
+    })
+
+    socket.on('pauseTimer', () => {
+        const user = getUser(socket.id)
+        rooms[user.room].paused = true
+        io.to(user.room).emit('pauseTimer')
+    })
+
+    socket.on('playTimer', () => {
+        const user = getUser(socket.id)
+        rooms[user.room].paused = false
+        io.to(user.room).emit('playTimer')
     })
 
     socket.on('disconnect', () => {
@@ -75,10 +91,7 @@ io.on('connection', (socket) => {
                 'message',
                 generateMessage(`${user.username} has left!`)
             )
-            io.to(user.room).emit('roomData', {
-                room: user.room,
-                users: getUsersInRoom(user.room),
-            })
+            io.to(user.room).emit('updateUserList', getUsersInRoom(user.room))
         }
     })
 })

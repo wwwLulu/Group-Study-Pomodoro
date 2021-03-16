@@ -3,13 +3,20 @@ const vueApp = Vue.createApp({
         return {
             username: '',
             room: '',
-            time: '',
+            time: '25:00',
+            timerPaused: false,
             userList: [],
         }
     },
     methods: {
-        startTimer() {
-            socket.emit('startTimer')
+        setTimer() {
+            socket.emit('setTimer')
+        },
+        pauseTimer() {
+            socket.emit('pauseTimer')
+        },
+        playTimer() {
+            socket.emit('playTimer')
         },
     },
 }).mount('#app')

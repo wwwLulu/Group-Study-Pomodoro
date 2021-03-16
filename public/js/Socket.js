@@ -22,3 +22,15 @@ socket.on('updateTimer', (time) => {
 socket.on('updateUserList', (userList) => {
     vueApp.userList = userList
 })
+
+socket.on('setTimer', () => {
+    socket.emit('playTimer')
+})
+
+socket.on('playTimer', () => {
+    vueApp.timerPaused = false
+})
+
+socket.on('pauseTimer', () => {
+    vueApp.timerPaused = true
+})
