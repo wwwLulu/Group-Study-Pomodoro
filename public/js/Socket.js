@@ -14,7 +14,9 @@ socket.emit('join', { username, room }, (error) => {
     }
 })
 
-socket.emit('setTimer')
+socket.emit('setTimer', () => {
+    socket.emit('pauseTimer')
+})
 
 // Server => Client
 socket.on('updateTimer', (time) => {
@@ -23,11 +25,12 @@ socket.on('updateTimer', (time) => {
 
 socket.on('updateUserList', (userList) => {
     vueApp.userList = userList
+    vueApp.assignHost()
 })
 
-socket.on('setTimer', () => {
-    socket.emit('pauseTimer')
-})
+// socket.on('setTimer', () => {
+//     socket.emit('pauseTimer')
+// })
 
 socket.on('playTimer', () => {
     vueApp.timerPaused = false

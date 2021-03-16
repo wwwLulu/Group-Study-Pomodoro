@@ -28,25 +28,34 @@
                 <li v-for="user in userList" :key="user">{{user.username}}</li>
             </ul>
 
+            <div v-if="isHost" class="methods">
+                <button @click="changeTimeToPomodoro">Pomodoro</button>
+                <button @click="changeTimeToBreak">Break</button>
+            </div>
+
             <h2>{{time}}</h2>
 
-            <div class="buttons">
-                <button v-if="!timerPaused" @click="pauseTimer">Pause</button>
-                <button v-else @click="playTimer">Play</button>
-            </div>
-            <!-- 
-            <div class="time-states">
-                <button @click="breakTimer">Pomodoro</button>
-                <button @click="breakTimer">Break</button>
-            </div> -->
+            <section v-if="isHost" class="host-settings">
+                <div class="buttons">
+                    <button v-if="!timerPaused" @click="pauseTimer">
+                        Pause
+                    </button>
+                    <button v-else @click="playTimer">Play</button>
+                </div>
 
-            <div class="inputs">
-                <label for="pomodoro">Pomodoro</label>
-                <input type="number" ref="pomodoroTime" />
-                <label for="break">Break</label>
-                <input type="number" ref="breakTime" />
-                <button @click="updateTimeSettings">Save</button>
-            </div>
+                <div class="inputs">
+                    <label for="pomodoro">Pomodoro</label>
+                    <input
+                        type="number"
+                        ref="pomodoroTime"
+                        min="1"
+                        max="1000"
+                    />
+                    <label for="break">Break</label>
+                    <input type="number" ref="breakTime" min="1" max="1000" />
+                    <button @click="updateTimeSettings">Save</button>
+                </div>
+            </section>
         </div>
     </body>
 </html>

@@ -1,6 +1,7 @@
 const vueApp = Vue.createApp({
     data() {
         return {
+            isHost: false,
             username: '',
             room: '',
             time: '',
@@ -21,6 +22,15 @@ const vueApp = Vue.createApp({
         },
         playTimer() {
             socket.emit('playTimer')
+        },
+        assignHost() {
+            const host = this.userList.filter((user) => user.host == true)
+            if (host[0].username == username) {
+                console.log(username)
+                this.isHost = true
+            } else {
+                this.isHost = false
+            }
         },
     },
 }).mount('#app')

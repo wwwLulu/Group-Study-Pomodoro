@@ -8,6 +8,7 @@ const {
     removeUser,
     getUser,
     getUsersInRoom,
+    assignHost,
 } = require('./utils/Users')
 
 const {
@@ -39,6 +40,7 @@ io.on('connection', (socket) => {
             return callback(error)
         }
         socket.join(user.room)
+        assignHost(user.room)
         io.to(user.room).emit('updateUserList', getUsersInRoom(user.room))
         socket.broadcast
             .to(user.room)
@@ -61,7 +63,8 @@ io.on('connection', (socket) => {
     socket.on('setTimer', () => {
         const user = getUser(socket.id)
         initializePomodoro(user.room, {})
-        io.to(user.room).emit('setTimer')
+        io.to(user.room).emit('updateTimer', getCurrentTime(user.room))
+
         const timer = setInterval(() => {
             if (!rooms[user.room].paused) {
                 io.to(user.room).emit('updateTimer', getCurrentTime(user.room))
