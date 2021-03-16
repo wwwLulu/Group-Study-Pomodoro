@@ -23,13 +23,30 @@
     </head>
     <body>
         <div id="app">
-            <button @click="setTimer">Create Timer</button>
-            <button v-if="!timerPaused" @click="pauseTimer()">Pause</button>
-            <button v-else @click="playTimer()">Play</button>
-            <h2>{{time}}</h2>
+            <h4>{{room}}</h4>
             <ul>
                 <li v-for="user in userList" :key="user">{{user.username}}</li>
             </ul>
+
+            <h2>{{time}}</h2>
+
+            <div class="buttons">
+                <button v-if="!timerPaused" @click="pauseTimer">Pause</button>
+                <button v-else @click="playTimer">Play</button>
+            </div>
+            <!-- 
+            <div class="time-states">
+                <button @click="breakTimer">Pomodoro</button>
+                <button @click="breakTimer">Break</button>
+            </div> -->
+
+            <div class="inputs">
+                <label for="pomodoro">Pomodoro</label>
+                <input type="number" ref="pomodoroTime" />
+                <label for="break">Break</label>
+                <input type="number" ref="breakTime" />
+                <button @click="updateTimeSettings">Save</button>
+            </div>
         </div>
     </body>
 </html>

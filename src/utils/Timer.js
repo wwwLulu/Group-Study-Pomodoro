@@ -12,7 +12,6 @@
             }
 */
 const rooms = {}
-const { io } = require('../Index.js')
 
 class Time {
     constructor(hours, minutes, seconds) {
@@ -23,17 +22,9 @@ class Time {
         this.time
     }
 
-    // TickTime(room, paused) {
-    //     const timer = setInterval(() => {
-    //         if (!paused) {
-    //             io.to(room).emit(
-    //                 'updateTimer',
-    //                 getCurrentTime(room, 'pomodoro')
-    //             )
-    //             tickPomodoro(room)
-    //         }
-    //     }, 1000)
-    // }
+    ChangeTime(minutes) {
+        ;(this.hours = 0), (this.minutes = minutes), (this.seconds = 0)
+    }
 
     TimeOver() {
         return this.hours === 0 && this.minutes === 0 && this.seconds === 0
@@ -92,6 +83,7 @@ const initializePomodoro = (
     rooms[room] = {
         pomodoroTime,
         breakTime,
+        paused: true,
     }
 }
 
@@ -135,13 +127,20 @@ const tickTimeSpent = (room) => {
 /**
  *@param {String} room
  */
-const getCurrentTime = (room, type = 'pomodoro') => {
-    return type == 'pomodoro'
-        ? rooms[room].pomodoroTime.CurrentTime()
-        : rooms[room].breakTime.CurrentTime()
+const getCurrentTime = (room) => {
+    return rooms[room].pomodoroTime.CurrentTime()
+}
+
+/**
+ *@param {String} room
+ *@param {Number} minutes
+ */
+const changeTime = (room, minutes) => {
+    rooms[room].pomodoroTime.ChangeTime(minutes)
 }
 
 module.exports = {
+    changeTime,
     getCurrentTime,
     rooms,
     initializePomodoro,
@@ -158,6 +157,8 @@ module.exports = {
 // tickPomodoro('dskl')
 // tickPomodoro('dskl')
 // tickPomodoro('dskl')
+// changeTime('dskl', 5)
+// console.log(rooms)
 // tickBreakTime('dskl')
 
-console.log(rooms)
+// console.log(rooms)

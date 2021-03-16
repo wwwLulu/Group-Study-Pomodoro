@@ -11,8 +11,10 @@ const {
 } = require('./utils/Users')
 
 const {
+    Time,
     rooms,
     getCurrentTime,
+    changeTime,
     initializePomodoro,
     setPomodoroTime,
     setBreakTime,
@@ -53,7 +55,6 @@ io.on('connection', (socket) => {
             'message',
             generateMessage(user.username, message)
         )
-        //Executes an acknowledgement on the Client
         callback()
     })
 
@@ -63,13 +64,16 @@ io.on('connection', (socket) => {
         io.to(user.room).emit('setTimer')
         const timer = setInterval(() => {
             if (!rooms[user.room].paused) {
-                io.to(user.room).emit(
-                    'updateTimer',
-                    getCurrentTime(user.room, 'pomodoro')
-                )
+                io.to(user.room).emit('updateTimer', getCurrentTime(user.room))
                 tickPomodoro(user.room)
             }
         }, 1000)
+    })
+
+    socket.on('changeTime', (minutes) => {
+        const user = getUser(socket.id)
+        changeTime(user.room, minutes)
+        io.to(user.room).emit('updateTimer', getCurrentTime(user.room))
     })
 
     socket.on('pauseTimer', () => {

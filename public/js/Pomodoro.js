@@ -3,14 +3,18 @@ const vueApp = Vue.createApp({
         return {
             username: '',
             room: '',
-            time: '25:00',
-            timerPaused: false,
+            time: '',
+            timerPaused: true,
             userList: [],
+            pomodoroMinutes: 25,
+            breakMinutes: 5,
         }
     },
     methods: {
-        setTimer() {
-            socket.emit('setTimer')
+        updateTimeSettings() {
+            this.pomodoroMinutes = this.$refs.pomodoroTime.value
+            this.breakMinutes = this.$refs.breakTime.value
+            socket.emit('changeTime', this.pomodoroMinutes, this.breakMinutes)
         },
         pauseTimer() {
             socket.emit('pauseTimer')
