@@ -28,10 +28,6 @@ socket.on('updateUserList', (userList) => {
     vueApp.assignHost()
 })
 
-// socket.on('setTimer', () => {
-//     socket.emit('pauseTimer')
-// })
-
 socket.on('playTimer', () => {
     vueApp.timerPaused = false
 })

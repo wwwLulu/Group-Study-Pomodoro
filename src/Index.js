@@ -17,6 +17,7 @@ const {
     getCurrentTime,
     changeTime,
     initializePomodoro,
+    timerSet,
     setPomodoroTime,
     setBreakTime,
     tickBreakTime,
@@ -62,15 +63,25 @@ io.on('connection', (socket) => {
 
     socket.on('setTimer', () => {
         const user = getUser(socket.id)
-        initializePomodoro(user.room, {})
-        io.to(user.room).emit('updateTimer', getCurrentTime(user.room))
 
-        const timer = setInterval(() => {
-            if (!rooms[user.room].paused) {
-                io.to(user.room).emit('updateTimer', getCurrentTime(user.room))
-                tickPomodoro(user.room)
-            }
-        }, 1000)
+        //Makes sure that the timer only gets set if timer hasnt been created yet.
+        if (rooms[user.room] == undefined) {
+            initializePomodoro(user.room, {})
+            io.to(user.room).emit('updateTimer', getCurrentTime(user.room))
+            const timer = setInterval(() => {
+                if (rooms[user.room] == undefined) {
+                    clearInterval(timer)
+                    return
+                }
+                if (!rooms[user.room].paused) {
+                    io.to(user.room).emit(
+                        'updateTimer',
+                        getCurrentTime(user.room)
+                    )
+                    tickPomodoro(user.room)
+                }
+            }, 1000)
+        }
     })
 
     socket.on('changeTime', (minutes) => {
@@ -93,7 +104,14 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         const user = removeUser(socket.id)
+        if (
+            getUsersInRoom(user.room) == undefined ||
+            getUsersInRoom(user.room).length == 0
+        ) {
+            delete rooms[user.room]
+        }
         if (user) {
+            assignHost(user.room)
             io.to(user.room).emit(
                 'message',
                 generateMessage(`${user.username} has left!`)

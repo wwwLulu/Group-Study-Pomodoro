@@ -12,6 +12,10 @@ const vueApp = Vue.createApp({
         }
     },
     methods: {
+        changeTimeToBreak() {
+            this.emit('change')
+        },
+        changeTimeToPomodoro() {},
         updateTimeSettings() {
             this.pomodoroMinutes = this.$refs.pomodoroTime.value
             this.breakMinutes = this.$refs.breakTime.value
@@ -25,6 +29,7 @@ const vueApp = Vue.createApp({
         },
         assignHost() {
             const host = this.userList.filter((user) => user.host == true)
+
             if (host[0].username == username) {
                 console.log(username)
                 this.isHost = true

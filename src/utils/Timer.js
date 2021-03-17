@@ -4,11 +4,13 @@
                 pomoTime: new Time
                 breakTime: new Time
                 paused: false,
+                timeSet: false
             },
             room2: {
                 pomoTime: new Time
                 breakTime: new Time
                 paused: false
+                timeSet:  false
             }
 */
 const rooms = {}
@@ -84,6 +86,7 @@ const initializePomodoro = (
         pomodoroTime,
         breakTime,
         paused: true,
+        timeSet: false,
     }
 }
 
@@ -139,6 +142,14 @@ const changeTime = (room, minutes) => {
     rooms[room].pomodoroTime.ChangeTime(minutes)
 }
 
+/**
+ *@param {String} room
+ */
+
+const timerSet = (room) => {
+    return rooms[room] == undefined ? true : false
+}
+
 module.exports = {
     changeTime,
     getCurrentTime,
@@ -146,6 +157,7 @@ module.exports = {
     initializePomodoro,
     setPomodoroTime,
     setBreakTime,
+    timerSet,
     tickBreakTime,
     tickPomodoro,
     tickTimeSpent,
