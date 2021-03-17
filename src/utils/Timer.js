@@ -147,6 +147,7 @@ const changeTime = (room, minutes) => {
  */
 
 const timerSet = (room) => {
+    console.log(rooms[room])
     return rooms[room] == undefined ? true : false
 }
 

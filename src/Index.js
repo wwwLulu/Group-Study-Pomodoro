@@ -73,12 +73,18 @@ io.on('connection', (socket) => {
                     clearInterval(timer)
                     return
                 }
-                if (!rooms[user.room].paused) {
+                if (
+                    !rooms[user.room].paused &&
+                    getCurrentTime(user.room) != '0:0-1'
+                ) {
                     io.to(user.room).emit(
                         'updateTimer',
                         getCurrentTime(user.room)
                     )
                     tickPomodoro(user.room)
+                } else {
+                    rooms[user.room].paused = true
+                    io.to(user.room).emit('pauseTimer')
                 }
             }, 1000)
         }
@@ -104,13 +110,13 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         const user = removeUser(socket.id)
-        if (
-            getUsersInRoom(user.room) == undefined ||
-            getUsersInRoom(user.room).length == 0
-        ) {
-            delete rooms[user.room]
-        }
         if (user) {
+            if (
+                getUsersInRoom(user.room) == undefined ||
+                getUsersInRoom(user.room).length == 0
+            ) {
+                delete rooms[user.room]
+            }
             assignHost(user.room)
             io.to(user.room).emit(
                 'message',

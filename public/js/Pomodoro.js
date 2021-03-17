@@ -1,6 +1,7 @@
 const vueApp = Vue.createApp({
     data() {
         return {
+            currentStatus: 'pomodoro',
             isHost: false,
             username: '',
             room: '',
@@ -13,13 +14,22 @@ const vueApp = Vue.createApp({
     },
     methods: {
         changeTimeToBreak() {
-            this.emit('change')
+            socket.emit('changeTime', this.breakMinutes)
+            this.currentStatus = 'break'
         },
-        changeTimeToPomodoro() {},
+        changeTimeToPomodoro() {
+            socket.emit('changeTime', this.pomodoroMinutes)
+            this.currentStatus = 'pomodoro'
+        },
         updateTimeSettings() {
             this.pomodoroMinutes = this.$refs.pomodoroTime.value
             this.breakMinutes = this.$refs.breakTime.value
-            socket.emit('changeTime', this.pomodoroMinutes, this.breakMinutes)
+            socket.emit(
+                'changeTime',
+                this.currentStatus == 'pomodoro'
+                    ? this.pomodoroMinutes
+                    : this.breakMinutes
+            )
         },
         pauseTimer() {
             socket.emit('pauseTimer')
