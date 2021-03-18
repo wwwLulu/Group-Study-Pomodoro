@@ -48,17 +48,17 @@ io.on('connection', (socket) => {
             .emit('message', generateMessage(`${user.username} has joined!`))
     })
 
-    socket.on('sendMessage', (message, callback) => {
+    socket.on('sendMessage', (message) => {
         const user = getUser(socket.id)
-        if (!user) {
-            return callback('User does not exist')
-        }
-
         io.to(user.room).emit(
             'message',
             generateMessage(user.username, message)
         )
-        callback()
+    })
+
+    socket.on('updateTime', () => {
+        const user = getUser(socket.id)
+        io.to(user.room).emit('updateTimer', getCurrentTime(user.room))
     })
 
     socket.on('setTimer', () => {

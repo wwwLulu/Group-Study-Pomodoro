@@ -2,6 +2,8 @@ const vueApp = Vue.createApp({
     data() {
         return {
             currentStatus: 'pomodoro',
+            pomoActive: true,
+            breakActive: false,
             isHost: false,
             username: '',
             room: '',
@@ -10,9 +12,34 @@ const vueApp = Vue.createApp({
             userList: [],
             pomodoroMinutes: 25,
             breakMinutes: 5,
+            messages: [],
+            messageContent: '',
         }
     },
+    watch: {
+        time() {
+            if (this.time == '') {
+                this.time = `${pomodoroMinutes}:00`
+            }
+        },
+        currentStatus(status) {
+            if (status == 'pomodoro') {
+                pomoActive = true
+                breakActive = false
+            } else {
+                pomoActive = false
+                breakActive = true
+            }
+        },
+    },
     methods: {
+        autoScroll() {
+            this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        },
+        sendMessage() {
+            socket.emit('sendMessage', this.messageContent)
+            this.messageContent = ''
+        },
         changeTimeToBreak() {
             socket.emit('changeTime', this.breakMinutes)
             this.currentStatus = 'break'

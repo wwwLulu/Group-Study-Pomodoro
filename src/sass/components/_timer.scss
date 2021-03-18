@@ -1,0 +1,48 @@
+.timer {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    &__time {
+        font-size: 8rem;
+        color: var(--color-primary);
+    }
+    &__button {
+        z-index: 1000;
+        position: relative;
+        width: 11rem;
+        height: 3rem;
+    }
+    &__play-pause {
+        z-index: 2000;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 0.5rem 0;
+        background: var(--color-secondary);
+        border-radius: 1rem;
+        font-size: 1.6rem;
+        color: var(--color-primary);
+        border: none;
+        &::after {
+            content: '';
+            z-index: -1;
+            top: 0.5rem;
+            left: 0;
+            position: absolute;
+            border-radius: inherit;
+            width: inherit;
+            height: inherit;
+            background: var(--color-primary);
+        }
+    }
+    &__inputs {
+        position: fixed;
+        bottom: 3rem;
+    }
+}

@@ -3,6 +3,7 @@ const socket = io()
 const { username, room } = Qs.parse(location.search, {
     ignoreQueryPrefix: true,
 })
+// vueChat.chatsername = username
 vueApp.username = username
 vueApp.room = room
 
@@ -24,6 +25,7 @@ socket.on('updateTimer', (time) => {
 })
 
 socket.on('updateUserList', (userList) => {
+    socket.emit('updateTime')
     vueApp.userList = userList
     vueApp.assignHost()
 })
@@ -34,4 +36,14 @@ socket.on('playTimer', () => {
 
 socket.on('pauseTimer', () => {
     vueApp.timerPaused = true
+})
+
+// socket.on('message', ({ username, text, createdAt }) => {
+//     vueApp.messages.push(username, text, createdAt)
+// })
+
+socket.on('message', ({ username, text, createdAt }) => {
+    timeStamp = moment(createdAt).format('h:mm a')
+    vueApp.messages.push({ username, text, createdAt: timeStamp })
+    vueApp.autoScroll()
 })

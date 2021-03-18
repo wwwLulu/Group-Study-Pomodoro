@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap");
 :root {
-  --color-primary: #58abda; }
+  --color-primary: #575386;
+  --color-secondary: #fff; }
 
 html {
   scroll-behavior: smooth;
@@ -20,4 +21,116 @@ body {
   width: 100%;
   margin: 0 auto;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  min-height: 100vh; }
+  min-height: 100vh;
+  display: flex;
+  justify-content: center; }
+
+#app {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 80% 20%; }
+
+.room {
+  color: var(--color-primary);
+  position: absolute;
+  top: 3rem;
+  left: 3rem;
+  font-size: 3rem;
+  text-transform: uppercase; }
+
+.btn {
+  margin-right: 1rem;
+  font-size: 1.4rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 1rem;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary); }
+  .btn:hover {
+    cursor: pointer; }
+  .btn--active {
+    background: var(--color-primary);
+    color: var(--color-secondary); }
+
+.timer {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; }
+  .timer__time {
+    font-size: 8rem;
+    color: var(--color-primary); }
+  .timer__button {
+    z-index: 1000;
+    position: relative;
+    width: 11rem;
+    height: 3rem; }
+  .timer__play-pause {
+    z-index: 2000;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem 0;
+    background: var(--color-secondary);
+    border-radius: 1rem;
+    font-size: 1.6rem;
+    color: var(--color-primary);
+    border: none; }
+    .timer__play-pause::after {
+      content: '';
+      z-index: -1;
+      top: 0.5rem;
+      left: 0;
+      position: absolute;
+      border-radius: inherit;
+      width: inherit;
+      height: inherit;
+      background: var(--color-primary); }
+  .timer__inputs {
+    position: fixed;
+    bottom: 3rem; }
+
+.chat {
+  padding: 0.5rem;
+  position: relative;
+  background: var(--color-primary);
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 95% 5%; }
+  .chat__input {
+    width: 100%;
+    height: 100%;
+    font-size: 1.4rem; }
+  .chat__user-list {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: -100%; }
+  .chat__users {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: var(--color-primary); }
+  .chat__user {
+    font-size: 1.4rem;
+    text-align: right; }
+  .chat__messages {
+    overflow: auto; }
+
+.chat__message {
+  margin-bottom: 1rem;
+  color: white; }
+  .chat__message__content {
+    margin-top: 0.5rem;
+    color: black;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: white; }

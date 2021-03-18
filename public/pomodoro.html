@@ -19,51 +19,110 @@
         <script src="/js/Pomodoro.js" defer></script>
         <script src="/js/Socket.js" defer></script>
 
+        <link rel="stylesheet" href="style.css" />
         <title>Room</title>
     </head>
+
     <body>
         <div id="app">
-            <h4>{{room}}</h4>
-            <ul>
-                <li v-for="user in userList" :key="user">{{user.username}}</li>
-            </ul>
+            <div>
+                <h4 class="room">{{room}}</h4>
+                <div class="timer">
+                    <div v-if="isHost" class="methods">
+                        <button
+                            class="btn btn--active"
+                            @click="changeTimeToPomodoro"
+                        >
+                            Pomodoro
+                        </button>
+                        <button class="btn" @click="changeTimeToBreak">
+                            Break
+                        </button>
+                    </div>
 
-            <div v-if="isHost" class="methods">
-                <button @click="changeTimeToPomodoro">Pomodoro</button>
-                <button @click="changeTimeToBreak">Break</button>
+                    <p class="timer__time">{{time}}</p>
+
+                    <div v-if="isHost" class="timer__button">
+                        <button
+                            class="timer__play-pause"
+                            v-if="!timerPaused"
+                            @click="pauseTimer"
+                        >
+                            Pause
+                        </button>
+                        <button
+                            class="timer__play-pause"
+                            v-else
+                            @click="playTimer"
+                        >
+                            Play
+                        </button>
+                        <div class="timer__play-pause--backdrop"></div>
+                    </div>
+                    <div v-if="isHost" class="timer__inputs">
+                        <label for="pomodoro">Pomodoro</label>
+                        <input
+                            type="number"
+                            ref="pomodoroTime"
+                            min="1"
+                            max="1000"
+                            value="25"
+                        />
+                        <label for="break">Break</label>
+                        <input
+                            type="number"
+                            ref="breakTime"
+                            min="1"
+                            max="1000"
+                            value="5"
+                        />
+                        <button @click="updateTimeSettings">Save</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="timer"></div>
-            <h2>{{time}}</h2>
-
-            <section v-if="isHost" class="host-settings">
-                <div class="buttons">
-                    <button v-if="!timerPaused" @click="pauseTimer">
-                        Pause
-                    </button>
-                    <button v-else @click="playTimer">Play</button>
+            <div class="chat">
+                <div class="chat__user-list">
+                    <section class="chat__users">
+                        <div
+                            class="chat__user"
+                            v-for="user in userList"
+                            :key="user"
+                        >
+                            <div class="chat__user-bubble">
+                                {{user.username}}
+                            </div>
+                        </div>
+                    </section>
                 </div>
-
-                <div class="inputs">
-                    <label for="pomodoro">Pomodoro</label>
-                    <input
-                        type="number"
-                        ref="pomodoroTime"
-                        min="1"
-                        max="1000"
-                        value="25"
-                    />
-                    <label for="break">Break</label>
-                    <input
-                        type="number"
-                        ref="breakTime"
-                        min="1"
-                        max="1000"
-                        value="5"
-                    />
-                    <button @click="updateTimeSettings">Save</button>
+                <div class="chat__messages" ref="messages">
+                    <div
+                        v-for="message in messages"
+                        :key="message"
+                        class="chat__message"
+                    >
+                        <p class="chat__info">
+                            <span class="chat__message__username"
+                                >{{message.username}} -</span
+                            >
+                            <span class="chat__message__timestamp"></span>
+                                &nbsp;{{message.createdAt}}</span
+                            >
+                        </p>
+                        <div class="chat__message__content">
+                            {{message.text}}
+                        </div>
+                    </div>
                 </div>
-            </section>
+                <form @submit.prevent="sendMessage">
+                    <input
+                        v-model="messageContent"
+                        type="text"
+                        class="chat__input"
+                        placeholder="Type your message"
+                    />
+                </form>
+            </div>
         </div>
     </body>
 </html>
