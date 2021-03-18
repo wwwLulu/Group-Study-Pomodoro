@@ -4,26 +4,35 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Group Pomodoro</title>
+
+        <link rel="stylesheet" href="./style.css" />
+        <title>Home</title>
     </head>
     <body>
-        <form action="/pomodoro.html">
-            <input
-                class="form__display-name"
-                type="text"
-                placeholder="Display Name"
-                name="username"
-                required
-            />
-            <input
-                class="form__room"
-                type="text"
-                name="room"
-                placeholder="Room Name"
-            />
-            <button type="submit" class="form__join primary-gradient">
-                Join or Create Room
-            </button>
-        </form>
+        <div class="background primary-gradient"></div>
+        <div class="screen-container">
+            <div class="card form">
+                <h1>Anyadoro</h1>
+                <p>A group pomodoro to study with freinds</p>
+                <form action="/pomodoro.html">
+                    <input
+                        class="form__display-name"
+                        type="text"
+                        placeholder="Display Name"
+                        name="username"
+                        required
+                    />
+                    <input
+                        class="form__room"
+                        type="text"
+                        name="room"
+                        placeholder="Room Name"
+                    />
+                    <button type="submit" class="form__join primary-gradient">
+                        Join or Create Room
+                    </button>
+                </form>
+            </div>
+        </div>
     </body>
 </html>
