@@ -27,7 +27,7 @@ socket.on('updateTimer', (time) => {
 socket.on('updateUserList', (userList) => {
     socket.emit('updateTime')
     vueApp.userList = userList
-    vueApp.assignHost()
+    // vueApp.assignHost()
 })
 
 socket.on('playTimer', () => {
