@@ -4,7 +4,7 @@ const vueApp = Vue.createApp({
             currentStatus: 'pomodoro',
             pomoActive: true,
             breakActive: false,
-            isHost: false,
+            isHost: true,
             username: '',
             room: '',
             time: '',
